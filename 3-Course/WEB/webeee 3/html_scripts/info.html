@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        body {
+            background: rgba(107, 16, 150, 0.3)
+        }
+        p {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        .introduction {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            text-align: center;
+        }
+        .result{
+            padding: 9px 15px;
+            background-color:rgb(240, 233, 255);
+        }
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            text-align: left;
+            border-collapse: collapse;
+            border-spacing: 5px;
+            background: #e4dfec;
+            border-radius: 20px;
+        }
+        td {
+            padding: 10px;
+            color: #8D8173;
+        }
+        input[type=text] {
+            border: 2px;
+            border-radius: 4px;
+        }
+        input[type=date] {
+            border: 2px;
+            border-radius: 4px;
+        }
+        input[type=number] {
+            border: 2px;
+            border-radius: 4px;
+        }
+        input[type=email] {
+            border: 2px;
+            border-radius: 4px;
+        }
+        textarea {
+            border: 2px;
+            border-radius: 4px;
+        }
+        select {
+            border: 2px;
+            border-radius: 4px;
+        }
+        input:invalid {
+            border: 1px solid red;
+        }
+
+        input:valid {
+            border: 1px solid black;
+        }
+
+        .result {
+            display: table;
+            width: 600px;
+            margin: 0 auto;
+            border: 1px solid;
+            padding: 10px;
+            border-radius: 15px;
+        }
+        .result:empty{
+            border: 0px;
+            padding: 0px
+        }
+        button {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        div {
+            padding: 15px;
+        }
+
+    </style>
+    <meta charset="utf-8">
+    <header>
+        <title>Таблица Резюме (Работа Яны Лазаревой)</title>
+    </header>
+    <body>
+        <h1 align="center" id="title" >Резюме </h1>
+        <div align="center">
+            <button id="edit_btn" type="button">Изменить запись</button>
+        </div>
+        <div id="result" class="result"></div>
+    </body>
+    </html>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://randojs.com/1.0.0.js"></script>
+    <script type="text/javascript">
+        arr_rus = new Array("Фамилия", "Имя", "Отчество", "Дата рождения", "Номер телефона", "Почта",
+                                "LinkedIn", "GitHub", "Статус", "Это ваш первый опыт работы в сфере IT?",
+                                "Пожалуйста, расскажите о вашем опыте работе в IT (если такой имеется)");
+        arr_res = new Array('firstname', 'lastname', 'middlename', 'birthdate', 'phonenumber', 'email', 
+                                'linkedId', 'gitHub', 'dropdown', 'firstexperience', 'description');
+
+        function renderDate(element, i) {
+            const s_el = document.createElement('p');
+            s_el.innerHTML = '<font color="grey">' + arr_rus[i] + '</font>' + ': ' + '<i>' + new Date(element).toLocaleDateString() + '</i>' ;
+            return s_el
+        }
+
+        function renderElement_radio(element, i) {
+            const s_el = document.createElement('p');
+            var radio_result = $("#time").prop("checked", true).val();
+            $(s_el).html('<font color="grey">' + arr_rus[i] + '</font>' + ': ' + '<i>' + radio_result + '</i>')
+            return s_el
+        }
+
+        function renderElement_checkbox(element, num, arr_rus, i) {
+            const s_el = document.createElement('p');
+            var elementList = $('#emotions' + num).prop("checked", true).val();
+            var div_array = Array.prototype.slice.call(elementList); 
+            let string_for_add = div_array.join(", ");
+            $(s_el).html('<font color="grey">' + arr_rus[i] + '</font>' + ': ' + '<i>' + string_for_add + '</i>')
+            return s_el
+        }
+        
+        function renderElement(element, i) {
+            const s_el = document.createElement('p');
+            $(s_el).html('<font color="grey">' + arr_rus[i] + '</font>' + ': ' + '<i>' + element+ '</i>')
+            return s_el
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        var key = getParameterByName('address');
+
+        const myDynamicForm = $('#result');
+
+        address = localStorage.getItem(key);
+
+        $.getJSON(address, function(e){
+                    for (i=0; i < arr_rus.length; i++ ) {
+                        let res_el = renderElement(e[arr_res[i]], i)
+                        $('#result').append(res_el);
+                        // document.getElementById("result").appendChild(res_el);
+                    }
+                })
+        
+        $("#edit_btn").click(function(){
+            document.location='resume_edit.html?address=' + key + '&ver=' + Math.round(+new Date()/1000);
+        });    
+
+
+    </script>
+

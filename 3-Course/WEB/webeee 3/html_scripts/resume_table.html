@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        body {
+            background: rgba(107, 16, 150, 0.3)
+        }
+        p {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        .introduction {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            text-align: center;
+        }
+        div {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            padding: 9px 15px;
+        }
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            text-align: left;
+            border-collapse: collapse;
+            border-spacing: 5px;
+            background: #e4dfec;
+            border-radius: 15px;
+        }
+        tbody tr:nth-child(8) {
+            border-bottom: 2px solid #29F25B;
+        }
+        tbody tr:nth-child(10) {
+            border-bottom: 2px solid #1A60DB;
+        }
+        th {
+            padding: 15px;
+        }
+        td {
+            padding: 15px;
+            color: #8D8173;
+        }
+        input[type=text] {
+            border: 2px;
+            border-radius: 4px;
+        }
+        input[type=date] {
+            border: 2px;
+            border-radius: 4px;
+        }
+        input[type=number] {
+            border: 2px;
+            border-radius: 4px;
+        }
+        input[type=email] {
+            border: 2px;
+            border-radius: 4px;
+        }
+        textarea {
+            border: 2px;
+            border-radius: 4px;
+        }
+        select {
+            border: 2px;
+            border-radius: 4px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        input:invalid {
+            border: 1px solid red;
+        }
+
+        input:valid {
+            border: 1px solid black;
+        }
+
+        .result {
+            display: table;
+            width: 600px;
+            margin: 0 auto;
+            border: 1px solid;
+            padding: 10px;
+        }
+        .result:empty{
+            border: 0px;
+            padding: 0px
+        }
+        button {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+
+    </style>
+    <meta charset="utf-8">
+    <header>
+        <title>Таблица Резюме (Работа Яны Лазаревой)</title>
+    </header>
+    <body>
+        <h1 align="center" id="title" >Резюме </h1>
+        <p class='introduction'>
+            Вводятся несколько документов, которые отображаются в строках таблицы (документ - это тот, что формировался в 1-м задании)
+            <br>Обеспечить возможности добавления нового документа в таблицу, удаления строк по номеру строки (0), изменения отдельных документов, 
+            <br>сохранения на сервере в файле в формате JSON для каждого элемента (каждая строка текстового файла - документ)  (1)
+            <br>
+            <br>Работу выполнила: <b>Яна Лазарева</b>
+        </p> 
+        <div align="center">
+            <button id="add_btn" type="button">Добавить новую запись</button>
+        </div>
+        <div align="center">
+            Удалить строку: 
+            <select id=del name=del></select>
+            <button id="del_btn" type="button">Удалить</button>
+        </div>
+        <table id='resumes' align="center" cellspacing="20" cellpadding="5" width="450">
+            <tr>
+                <th>Номер</th>
+                <th>Документ</th>
+            </tr>
+        </table>
+    </body>
+</html>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+        $.ajax
+        ({
+            type: 'GET',
+            url: 'http://yana-resume.com/php_scripts/getter.php',
+                success: function (data) {
+                    data = JSON.parse(data);
+                    let count = Object.keys(data).length;
+                    $.each(data, function(key, address) {
+                        $.getJSON(address, function(e){
+                            key ++;
+                            res1 = "<tr><td>" + key + "</td>"
+                            res2 = "<td><a href='http://yana-resume.com/html_scripts/info.html?address=" + key + "&ver=" + Math.round(+new Date()/1000) + "'>" + e.firstname + " " + e.lastname + "</a></td></tr>"
+                            var string = $('<tr>')  
+                                .append(res1)
+                                .append(res2);
+                            localStorage.setItem(key, address);
+                            $('#del').append(new Option(key, key));
+                            $('#resumes').append(string); 
+                        }).fail(function(){
+                            console.log("An error has occurred.");
+                        });
+                    });
+                },
+                failure: function() {alert("Error!");}
+            });
+        
+        $( "#del_btn" ).click(function() {
+            var addr = '../docs/data' + $( "#del" ).val() + '.json';
+            $.ajax
+                ({
+                    type: 'POST',
+                    url: 'http://yana-resume.com/php_scripts/deleter.php',
+                    data: {addr},
+                    success: function () {
+                        alert("ok"); 
+                    },
+                    failure: function() {alert("Error!");}
+                });
+            
+            $.ajax
+            ({
+                type: 'GET',
+                url: 'http://yana-resume.com/php_scripts/getter.php',
+                    success: function (data) {
+                        location.reload()
+                    },
+                    failure: function() {alert("Error!");}
+            });
+        });
+
+        $( "#add_btn" ).click(function() {
+            $(location).prop('href', 'http://yana-resume.com/html_scripts/resume_create.html')
+        });
+
+</script>

@@ -1,0 +1,118 @@
+<style>body{margin-left:50px;background:#EEE}</style>
+<script src="jquery-latest.min.js"></script>
+<script>
+gr = "pi191"
+n1 = 30;  n2 = 56
+function fn(){  // установка номера
+	tt = document.getElementById('tb')
+	n = 1*document.getElementsByName('nr')[0].value
+	mm = tt.childNodes[n].childNodes // 9
+	document.frm1.fio.value  = mm[1].innerHTML	
+	document.frm1.db.value   = mm[2].innerHTML	
+	document.frm1.dd.value   = mm[3].innerHTML	
+	document.frm1.prof.value = mm[4].innerHTML	
+	document.frm1.plbd.value = mm[5].innerHTML	
+	document.frm1.ndk.value  = mm[6].innerHTML	
+	//  https://www.youtube.com/watch?v=n5TMhwZu7Gg
+	xx = mm[7].innerHTML; k = xx.indexOf("v="); xx = xx.substr(k+2)
+	k1 = xx.indexOf(">"); xx = xx.substr(0,k1-1)
+	document.frm1.jt.value   = xx
+	
+	document.frm1.mn.value   = mm[8].innerHTML	
+	xx = mm[9].innerHTML; k = xx.indexOf("="); xx = xx.substr(k+2)
+	document.frm1.wiki.value = xx.substr(0,xx.length-10)
+}
+function fadd(k){
+	var s = $('form').serialize();
+	n = 1*document.getElementsByName('nr')[0].value
+	if(k==1) s += "&delete=1"
+	if(k==2) s += "&change=1"
+	if(k>0) s += "&nr="+n
+	$.post("spr_save.php?gr="+gr+"&ns=" + nspr +"&"+s,function(data){
+		alert(data)
+		fopen()
+		//window.location.reload()
+	})
+}
+function finit(){
+  var ns = localStorage.getItem(gr+'_spr')
+  if (ns) {
+	 $('#ns1').val(ns)
+	 $('#ns1').prop("min",n1)
+	 $('#ns1').prop("max",n2)
+  }  
+}
+
+var nspr = 0
+function fopen(){
+	nspr = $('#ns1').val()
+	if (nspr.length==0) {alert('Не задан номер'); return}
+	localStorage.setItem(gr+'_spr', nspr);
+	$("#ref").prop("href", "pi191_"+nspr+".json")
+	$.post("spr_create.php?gr="+gr+"&ns="+nspr,function(data){
+		//alert(data)
+		spr = JSON.parse(data)
+		s = "<tr><th>N<th style='width:270px'>ФИО<th style='width:75px'>родился<th style='width:75px'>умер"
+		+"<th>профессия<th>место рождения<th>Nd<th>YouTube<th align='right'>мин<th>wiki<th style='width:250px'>прим."
+
+		for(i=0; i<spr.length; i++){
+			i1=i+1
+			aj = "<a href='https://www.youtube.com/watch?v=" + spr[i].jt + "'>" + spr[i].jt + "</a>"
+			aw = "<a href='"+spr[i].wiki+ "'>wiki</a>" 
+
+			s +=  "<tr><td>" + i1 
+			  + "<td>" + spr[i].fio
+			  + "<td>" + spr[i].db
+			  + "<td>" + spr[i].dd
+			  + "<td>" + spr[i].prof
+			  + "<td>" + spr[i].plbd
+			  + "<td align='right'>" + spr[i].ndk
+			  + "<td>" + aj
+			  + "<td>" + spr[i].mn
+			  + "<td>" + aw
+			  + "<td>" + spr[i].comm
+		}
+		//alert('s='+s)
+	    var tbody = document.getElementById('mytab').getElementsByTagName("TBODY")[0];
+		tbody.innerHTML = s
+		$('#idn').prop("max",spr.length)
+	})	
+}
+
+
+</script>
+<body onload='finit()'>
+<h3>Звезды мировой культуры</h3>
+Номер справочника <input type='number' id='ns1' min=30 max=56  style='width:50px'> 
+<button onclick='fopen()' > Открыть </button>
+
+<form name='frm1'>
+	<table>
+	<tr><td>ФИО <td>	<input name='fio' style='width:250px'>
+	 даты 		 		<td><input name='db'  type='date' style='width:140px'> - 
+						<input name='dd'  type='date' style='width:140px'>
+	<tr><td>проф <td>	<input name='prof' style='width:250px'>
+			место <td><input name='plbd' style='width:295px'>
+			прим. <input name='comm' style='width:150px'>
+	<tr><td>ДК ЮМ<td>		<input name='ndk'  type='number' style='width:50px'>
+	     YouTube 		<input name='jt'   style='width:135px'> 
+	     мин 			<td><input name='mn'   type='number' style='width:50px'>
+	     WIKI			<input name='wiki' style='width:400px'>
+	</table>
+	<hr>
+	<input name='nr' id='idn' onchange='fn()' type='number' min=1 max=1 style='width:70px'>
+	<input onclick='fadd(0)' type='button' value='Добавить'>
+	<input  onclick='fadd(1)' type='button' value='Удалить' name='delete'>
+	<input  onclick='fadd(2)' type='button' value='Изменить' name='change'>
+	
+	<a id='ref' href="pers3.json" download >скачать</a>
+	
+</form>
+	<table id='mytab' border=2 width=1250 cellspacing=0 cellpadding=3 style='background:#FFF'>
+		<tbody id='tb'>
+<!--		
+			<tr><th>N<th style='width:270px'>ФИО<th style='width:75px'>родился<th style='width:75px'>умер
+			<th>профессия<th>место рождения<th>Nd<th>JouTube<th align='right'>мин<th>wiki<th>прим.
+-->			
+		</tbody>
+	</table>

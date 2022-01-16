@@ -1,0 +1,169 @@
+<html>
+    <style>
+        body {
+            background: linear-gradient(45deg, #8db4ad, #ecae7d);
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .control {
+            width: 300px;
+            margin-bottom: 10px;
+            margin-top: 2px;
+        }
+
+        .result {
+            width: 300px;
+            margin-bottom: 10px;
+            margin-top: 2px;
+            align-self: center;
+            align-items: left;
+        }
+
+        input:invalid {
+            border: 2px dashed red;
+        }
+
+        input:valid {
+            border: 2px solid black;
+        }
+
+      </style>
+    <header>
+        <meta charset='utf-8'/>
+        <title>lazuurk #3</title>
+    </header>
+    <body>
+      <div class="wrapper">
+          <p align="center" id="title" width="50" > Лазарева Яна
+                      <br>
+                      <br>Сформировать текст по шаблону, в который вставлются элементы, требующие проверки:
+                      <br>год, дата, время, фамилия, почта, число (в диапазоне)
+                      <br>Использовать различные типы input, таблицу, радиокнопки и т.п.
+                      <br>Минимальный CSS
+                  </p>
+          <h2 align = 'center'>Order an IPhone</h2>
+          <form id="my_form">
+              Name
+              <input class="control" name="name" id="name" type="text" placeholder="Enter your name" value = "Ivan" pattern="^[a-zA-Z]+$" required >
+              Last name
+              <input class="control" name="lname" id="lname" type="text" placeholder="Enter your last name" value = "Ivanov" pattern="^[a-zA-Z]+$" required >
+              Email
+              <input class="control" name="email" id="email" type="email" placeholder="Enter your email address" value = "my@example.com" required>
+              <tr>
+              Model
+              <td valign="top">
+                  <select class="control" name="model" id="model">
+                      <option value="Iphone 11">Iphone 11</option>
+                      <option value="Iphone 11 PRO">Iphone 11 PRO</option>
+                      <option value="Iphone 12">Iphone 12</option>
+                      <option value="Iphone 12 PRO MAX">Iphone 12 PRO MAX</option>
+                      <option value="Iphone 13">Iphone 13</option>
+                  </select>
+              </td>
+              </tr>
+                  Date for delivery
+                  <input class="control" id="date" name="date" type="date" value="2021-09-07" placeholder="Enter date for delivery">
+                  <button id = "button" type="button" form="my_form" >Order</button>
+          </form>
+          <div id="result" class="result" ></div>
+      </div>
+    </body>
+</html>
+
+<script>
+    function renderTitle() {
+        const el = document.createElement('h2');
+        el.innerHTML = `Your order`;
+        return el;
+    }
+
+    function renderInfo() {
+        const el = document.createElement('p');
+        el.innerHTML = `The file with 'LocalStorage' information was created in 'result.txt'`;
+        return el;
+    }
+
+    function renderNameFrom(name, lname) {
+        const el = document.createElement('p');
+        el.innerHTML = `Name: ${name} ${lname}`;
+        return el;
+    }
+
+    function renderEmail(email) {
+        const el = document.createElement('p');
+        el.innerHTML = `Email: ${email}`;
+        return el;
+    }
+
+    function renderBody(model) {
+        const el = document.createElement('p');
+        el.innerHTML = `Model: ${model} `;
+        return el;
+    }
+
+    function renderDate(date) {
+        const el = document.createElement('p');
+        el.innerHTML = `Date for delivery: ${date}`;
+        return el;
+    }
+
+    function renderResult(name, lname, email, model, date) {
+        document.getElementById('result').appendChild(renderTitle())
+        document.getElementById('result').appendChild(renderInfo())
+        document.getElementById('result').appendChild(renderNameFrom(name, lname))
+        document.getElementById('result').appendChild(renderEmail(email))
+        document.getElementById('result').appendChild(renderBody(model))
+        document.getElementById('result').appendChild(renderDate(date));
+        return;
+    }
+
+    function getFV(fieldId) {
+        return document.getElementById(fieldId).value;
+    }
+
+    const btn = document.getElementById("button")
+    const form = document.getElementById("my_form")
+    btn.onclick = function() {
+        // const myNode = document.getElementById("result");
+        // myNode.innerHTML = '';
+        if (form.checkValidity()) {
+            const name = getFV('name');
+            const lname = getFV('lname');
+            const email = getFV('email');
+            const model = getFV('model');
+            const date = getFV('date');
+            renderResult(name, lname, email, model, date);
+            lstor();
+          } 
+    }
+
+    lstor = function()
+        {var Order = {
+            'name': getFV('name'),
+            'last_name': getFV('lname'),
+            'email': getFV('email'),
+            'model': getFV('model'),
+            'date' : getFV('date')
+            }
+
+        var serialObj = JSON.stringify(Order); //сериализуем его
+
+        function download(content, fileName, contentType) {
+            var a = document.createElement("a");
+            var file = new Blob([content], {type: contentType});
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            a.click();
+        }
+        download(serialObj, 'result.txt', 'text/plain');
+    }
+</script>

@@ -1,0 +1,55 @@
+<html>
+    <header>
+        <title>(Yana Lazareva)</title>
+        <meta charset="utf-8">
+    </header>
+    <body bgcolor="e4ecff">
+        <h1 align="center" id="title" ></h1>
+        <p align="center"> 
+            В HTML-документе определены 2 формы. 
+            <br>На первой управляющие кнопки и поля ввода, вторая  - пустая. При нажатии на кнопки первой формы на второй форме генерируются элементы (а).
+            <br>Параметры и количество элементов определяются в элементах 1-й формы(б), а также заданы в виде массивов на JavaScript.
+            <br>После построения элементов на второй форме по некоторым кнопкам/элементам можно произвести некоторые действия (в), результаты которых отображаются на 2-форме.
+            <br>Для генерации элементов и вывода результатов использовать свойство innerHTML.
+            <br><br>(а) TABLE из одного столбца, ссылки(link) в ячейках таблицы 
+            <br>(б)В элементе INPUT выбрать цвет, указав номер ячейки.
+            <br>(в)По кнопке определить число ссыкок в документе HTML значения кнопок заданы в массиве
+            <br><br><b>Лазарева Яна</b>
+            <br><br><br>
+        </p> 
+        <form id="input_form" align="center" >
+            Номер ячейки (1-5)
+            <input name="cell" id="cell" min=1 max=5><br><br>
+            Код цвета
+            <input name="col" id="col"><br><br>
+            <button id="button" type="button">Подтвердить</button>
+        </form>
+        <form id="output_form" name="output_form" align="center" >
+            <div id="myDynamicTable"></div>
+        </form>
+    </body>
+</html>
+
+<script>
+    var arr = new Array("https://www.google.com/", "https://yandex.ru/", "https://vk.com/", "https://mail.ru/", "http://www.fa.ru/")
+    btn = document.getElementById("button")
+    btn.onclick = function() {
+        var select = document.getElementById("cell");
+        var s = "<h3>Таблица</h3><table border align='center'>";
+        var col = document.getElementById("col");
+        for (i=0; i < 5; i++ ) {
+        	if (i+1==select.value) {
+                s += "<tr bgcolor=#'" + col.value +"'><td>";
+                s += "<a style='color: #000000; padding: 4px; display: block;' href= '" + arr[i] + "'>" + arr[i] + "</a>";
+                s += "</td></tr>"; }
+         	else {
+                s += "<tr bgcolor='#e4ecff'><td>";
+                s += "<a style='color: #000000; padding: 4px; display: block;' href= '" + arr[i] + "'>" + arr[i] + "</a>";
+                s += "</td></tr>";
+          }
+        }
+        s += "</table>";
+        console.log(s);
+        document.getElementById("myDynamicTable").innerHTML = s;
+    }
+</script>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        body {
+            background: rgba(107, 16, 150, 0.3)
+        }
+        p {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        .introduction {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            text-align: center;
+        }
+        div {
+            padding: 9px 15px;
+        }
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            text-align: left;
+            border-collapse: collapse;
+            border-spacing: 5px;
+            background: #e4dfec;
+            border-radius: 20px;
+        }
+        
+        td {
+            padding: 10px;
+            color: #8D8173;
+        }
+        input[type=text] {
+            border: 2px;
+            border-radius: 4px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        input[type=date] {
+            border: 2px;
+            border-radius: 4px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        input[type=number] {
+            border: 2px;
+            border-radius: 4px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        input[type=email] {
+            border: 2px;
+            border-radius: 4px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        textarea {
+            border: 2px;
+            border-radius: 4px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        select {
+            border: 2px;
+            border-radius: 4px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        input:invalid {
+            border: 1px solid red;
+        }
+
+        input:valid {
+            border: 1px solid black;
+        }
+
+        .result {
+            display: table;
+            width: 600px;
+            margin: 0 auto;
+            border: 1px solid;
+            padding: 10px;
+        }
+        .result:empty{
+            border: 0px;
+            padding: 0px
+        }
+        button {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+
+    </style>
+    <meta charset="utf-8">
+    <header>
+        <title>Резюме (Работа Яны Лазаревой)</title>
+    </header>
+    <body>
+        <h1 align="center" id="title" >Резюме </h1>
+        <table align="center" cellspacing="20" cellpadding="5" width="650">
+            <form id="myDynamicForm" method="post" >
+                <tr>
+                    <td align="right" valign="top">Фамилия <font color="red">*</font></td>
+                    <td valign="top">
+                        <input type="text" id="firstname" size=45 name="firstname" placeholder="Введите фамилию" value=""
+                            pattern="^[а-яА-ЯёЁ]+$" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Имя <font color="red">*</font></td>
+                    <td valign="top">
+                        <input type="text" id="lastname" size=45 name="lastname" placeholder="Введите имя"  value="" 
+                            pattern="^[а-яА-ЯёЁ]+$" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Отчество</td>
+                    <td valign="top">
+                        <input type="text" id="middlename" size=45 name="middlename" placeholder="Введите отчество" value="" 
+                            pattern="^[а-яА-ЯёЁ]+$">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Дата рождения <font color="red">*</font></td>
+                    <td valign="top">
+                        <input type="date" size=35 id="birthdate" placeholder="Введите дату рождения"  value="" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Номер телефона <font color="red">*</font></td>
+                    <td valign="top">
+                        +7
+                        <input type="text" id="phonenumber" size=45 name="phone" placeholder='Введите номер формата "1234567890"' value="" 
+                            pattern="[9][0-9]{9}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Почта <font color="red">*</font></td>
+                    <td valign="top">
+                        <input type="email" size=35 id="email" placeholder='Введите почту формата "example@mail.ru"'  value=""  required>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">LinkedIn</td>
+                    <td valign="top">
+                        @
+                        <input type="text" size=35 id="linkedId" placeholder="LinkedIn"  value="" >
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">GitHub</td>
+                    <td valign="top">
+                        @
+                        <input type="text" size=35 id="gitHub" placeholder="GitHub" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top" >Статус <font color="red">*</font></td>
+                    <td valign="top">
+                        <select name="location" id="dropdown" required>
+                            <option value="cтудент">Студент</option>
+                            <option value="временно безработный">Временно безработный</option>
+                            <option value="полная занятость">Полная занятость</option>
+                            <option value="частичная занятость">Частичная занятость</option>
+                            <option value="учусь и работаю">Учусь и работаю</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Это ваш первый опыт работы в сфере IT? <font color="red">*</font></td>
+                    <td valign="top">
+                        <div id = firstexperience>
+                            <input class = 'time' name="time" type="radio" value="да" required>Да
+                            <br><input class = 'time' name="time" type="radio" value="нет">Нет
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Пожалуйста, расскажите о вашем опыте работе в IT (если такой имеется)</td>
+                    <td valign="top">
+                            <textarea id="description" name="event-details" cols="50" rows="7" placeholder="Прошлый раз я работал.." value="" ></textarea>
+                    </td>
+                </tr>
+            </table>
+            <p></p>
+            <div align="center">
+                <button id="saver_btn" type="button">Сохранить</button>
+            </div>
+            
+        </form>
+        <div id="myDynamicTable" class="result"></div>
+        <div id="result" class="result"></div>
+    </body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+
+    arr_res = new Array('firstname', 'lastname', 'middlename', 'birthdate', 'phonenumber', 'email', 
+                            'linkedId', 'gitHub', 'dropdown', 'firstexperience', 
+                            'characteristics1','characteristics2', 'description', 
+                            'desire');
+
+
+    function sumDigits(n) {
+        let sum = 0;
+        while (n) {
+            digit = n % 10;
+            sum += digit;
+            n = (n - digit) / 10;
+        }
+        return sum;
+    }
+
+    function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+    var key = getParameterByName('address');
+
+    address = localStorage.getItem(key);
+
+    $("#saver_btn").click(function(){
+        var resumeObject = new Object();
+        const myDynamicForm = document.getElementById('myDynamicForm');
+        if (myDynamicForm.checkValidity()){
+            $(arr_res).each(function(i, val) {
+                if (i == 3){
+                    resumeObject[val] = new Date($('#' + val).val()).toLocaleDateString();  
+                }
+                if (i == 9){
+                    resumeObject[val] = $(".time:checked").val();
+                }
+                else if (i == 10 || i == 11){
+                    num = sumDigits(i);
+                    var elementList = [];
+                    varr = '.emotions' + num + ':checked'
+                    $.each($(varr), function(){
+                        elementList.push($(this).val());
+                    });
+                    let string_for_add = elementList.join(", ");
+                    resumeObject[val] = string_for_add
+
+                }
+                else {
+                    resumeObject[val] = $('#' + val).val();  
+                }
+            });
+            $.ajax
+                ({
+                    type: 'POST',
+                    url: 'http://yana-resume.com/php_scripts/editer.php',
+                    data: {data:JSON.stringify(resumeObject), address:address},
+                    success: function () {
+                        $(location).prop('href', 'http://yana-resume.com/html_scripts/resume_table.html?ver=' + Math.round(+new Date()/1000))
+                    },
+                    failure: function() {alert("Error!");}
+                });
+
+
+        }
+        else {
+            alert('введены не все данные / данные введены неверно')
+        }
+    });
+
+    $.getJSON(address, function(e){
+        for (i=0; i < arr_res.length; i++ ) {
+            if (i == 9) {
+                if (e[arr_res[i]] == 'да'){
+                    $('input[name="time"][value="да"]').prop('checked', true);
+                }
+                else {
+                    $('input[name="time"][value="нет"]').prop('checked', true);
+                }
+            }
+
+            else if (i == 10) {
+                res1 = e[arr_res[i]].split(", ");
+                for (el in res1){
+                    link = 'input[class="emotions1"][value="' + res1[el] + '"]';
+                    $(link).prop('checked', true);
+                }; 
+            }
+
+            else if (i == 11) {
+                res2 = e[arr_res[i]].split(", ");
+                for (el in res2){
+                    link = 'input[class="emotions2"][value="' + res2[el] + '"]';
+                    $(link).prop('checked', true);
+                }; 
+            }
+            else {
+                varr = '#' + arr_res[i]
+                $(varr).val(e[arr_res[i]]);   
+            }
+        }          
+    })
+
+   
+</script>

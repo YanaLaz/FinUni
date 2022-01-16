@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        p {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            text-align: center;
+        }
+    </style>
+    <header>
+        <title>Order an IPhone</title>
+    </header>
+    <body bgcolor="ffffff">
+        <h1 align="center" id="title" width="600" >Order an IPhone</h1>
+
+        <p align="center" id="title" width="50" > Лазарева Яна
+            <br>
+            <br>Сформировать текст по шаблону, в который вставлются элементы, требующие проверки:
+            <br>год, дата, время, фамилия, почта, число (в диапазоне)
+            <br>Использовать различные типы input, таблицу, радиокнопки и т.п.
+            <br>Минимальный CSS
+        </p>
+        <table align="center" cellspacing="15" cellpadding="5" width="600" bgcolor="DCDCDC">
+            <tr>
+                <td colspan="2">    
+                    <h3 align="center" width="600" >Write information about yourself and select the desired order criteria</h3>
+                </td>
+            </tr>
+            <form>
+                <tr>
+                    <td align="right" valign="top">Name</td>
+                    <td valign="top">
+                        <input type="text" size=35 id="name" placeholder="Enter your name" required pattern="^[a-zA-Z]+$">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Last name</td>
+                    <td valign="top">
+                        <input type="text" size=35 id="lname" placeholder="Enter your last name" required pattern="^[a-zA-Z]+$">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Email</td>
+                    <td valign="top">
+                        <input type="email" size=35 id="email" placeholder="Enter your email address" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Model</td>
+                    <td valign="top">
+                        <select name="location" id="model">
+                            <option value="home">Iphone 11</option>
+                            <option value="commute">Iphone 11 PRO</option>
+                            <option value="work">Iphone 12</option>
+                            <option value="outside">Iphone 12 PRO MAX</option>
+                            <option value="other">Iphone 13</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Gigabyte capacity</td>
+                    <td valign="top">
+                        <input name="time" type="radio" value="morning">64 Gb
+                        <br><input name="time" type="radio" value="afternoon">128 Gb
+                        <br><input name="time" type="radio" value="evening">256 Gb
+                        <br><input name="time" type="radio" value="evening">512 Gb
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Color</td>
+                    <td valign="top">
+                        <input name="time" type="radio" value="morning">White
+                        <br><input name="time" type="radio" value="afternoon">Black
+                        <br><input name="time" type="radio" value="evening">Red
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top"> Accessories
+                        <br>(Select all types that you want)
+                    </td>
+                    <td valign="top">
+                        <input name="emotions" value="excited" type="checkbox">Airpods
+                        <br><input name="emotions" value="humbled" type="checkbox">Case
+                        <br><input name="emotions" value="elated" type="checkbox">Glass
+                        <br><input name="emotions" value="loved" type="checkbox">Charging unit
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" valign="top">Delivery address</td>
+                    <td valign="top">
+                            <textarea id="description" name="event-details" cols="35" rows="4" placeholder="Enter your address here..."></textarea>
+                    </td>
+                </tr>
+            </table>
+            <p></p>
+            <div align="center">
+                <button id="submit" type="submit">Submit</button>
+            </div>
+        </form>
+    </body>
+</html>

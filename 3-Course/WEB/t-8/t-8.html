@@ -1,0 +1,236 @@
+<html>
+
+	<style>
+        body {
+            font-family: sans-serif;
+            background-color: #f7de8c;
+            opacity: 0.8;
+            background-size: 10px 10px;
+        }
+        p {
+            font-family: "Gill Sans", sans-serif;
+        }
+        .introduction {
+            font-family: "Gill Sans", sans-serif;
+            text-align: center;
+            font-size: 100%;
+        }
+        table {
+            background-color: #ebe5ce;
+            background-size: 20px 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        thead th {
+        width: 25%;
+        }
+
+        button {
+        border: 0.75;
+        }
+
+		#graph {
+            display: inline;
+            background-image: url(./maps.jpg);
+            background-size: 800px 500px;
+        }
+    </style>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, 
+	  minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+  
+  <!-- <body onload='finit()'> -->
+	<body>
+		<div id="intro_div">
+            <h1 align="center">Музыкальные площадки Москвы</h1>
+        <p class='introduction'>
+			Загрузить данные с портала data.mos.ru, используя протокол OpenData, и содержащие геоданные (координаты объектов). 
+			<br>Выделить в JSON (программным способом - функция преобразует один JSON в другой.) только необходимые данные (название объектов, район и т.п.). 
+			<br>Выбор данных произвольный. Вариант указать в “Варианты-8”
+			<br>Отобразить координаты в canvas (см. примеры Примеры/18_11).
+			<br>Получить статистику расположения объектов по округам/районам (с помощью созданной функции)
+            <br>Работу выполнила: <b>Лазарева Яна</b>
+        </p></div>
+		<div align="center">
+            Сортировать столбец: 
+			<input id='srt' placeholder="1-4">
+            <button id="srt_btn" type="button" onClick="onClickHandler()">Сортировать</button>
+        </div>
+		<br>
+		<div id='dta' align="center"></div>
+		<br>
+        <div align="center">
+			<!-- <button onclick="сlearCanvas(0)" align="center"><b>Построить точки</b></button><br> -->
+            <canvas id="graph" width="800" height="500"></canvas>
+        </div>
+
+		<div id="intro_div">
+            <h3 align="center">Cтатистика расположения объектов по округам </h3>
+        </div>
+        <div id="empty"></div>
+        <table id=statistics align="center">
+            <tr>
+                <th><b>Округ</b></th>
+                <th><b>Место</b></th>
+                <th><b>Количество</b></th>
+              </tr>
+        </table>
+  </body>
+  </html>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script> 
+
+const сoordinates_ = Array();
+	$.ajax({
+		url: 'https://apidata.mos.ru/v1/datasets/2116/features?api_key=136318bd11aad85f6ef894dd37734e3b',
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+			var s = "<table border width=500 id='table'> <tr><th>Name<th>Width<th>Longitude<th>AdmArea<th>District"
+			// for (i=0; i<k; i++){
+			var areas = [];
+			$.each(data.features, function(idx, features){
+				wd = features.geometry.coordinates.toString().split(",")[1]
+                ln = features.geometry.coordinates.toString().split(",")[0]
+				l2 =  Math.round(700 * (wd - 55.5)/(55.9-55.5))
+                l1 = Math.round(350 * (ln - 37.4)/(37.8-37.4))
+				namel = features.properties.Attributes.Name
+				сoordinates_.push([l1 + 179, 700-l2, namel.split(" ")[1]])
+                area_ = features.properties.Attributes.AdmArea
+				areas.push(area_); 
+
+
+                district_ = features.properties.Attributes.District
+				if (district_.split(" ")[0] === 'район'){
+					district_ = district_.split(" ").reverse().join(" ") ;
+				}
+				else {
+					district_ = district_;
+				}
+				s += "<tr><td>" + namel + "<td>" + wd + "<td>" + ln + "<td>" + area_ + "<td>" + district_ 
+			})
+		s += "</table>"
+		document.getElementById("dta").innerHTML = s
+
+		function onlyUnique(value, index, self) {
+        	return self.indexOf(value) === index;
+    	}
+
+		var areas = areas.filter(onlyUnique);
+        const neighborhood = new Object();
+
+
+		$.each(areas,function(index, value){
+            neighborhood[value] = [];
+        });
+
+		createСircles()
+
+		$("#table  tr").each(function(i){
+            if(i==0) return;
+            var vas = $.trim($(this).find("td").eq(0).html());
+            neighborhood[$.trim($(this).find("td").eq(3).html())].push(vas)
+        });
+
+		$.each(areas,function(index, value){
+            res11 = "<td>" + value + "</td>";
+            res12 = "<td>" + neighborhood[value]+ "</td>";
+			// alert(res12)
+            res13 = "<td>" + neighborhood[value].length  + "</td>";
+            var row1 = $('<tr>')
+                .append(res11)
+                .append(res12)
+                .append(res13)
+            $('#statistics').append(row1); 
+        })
+	}})
+
+	
+	function sortTable(n) {
+		var table, rows, switching, i, x, y, shouldSwitch,
+		dir, switchcount = 0;
+		table = document.getElementById("table");
+		switching = true;
+		dir = "asc";
+		while (switching) {
+			switching = false;
+			rows = table.getElementsByTagName("tr");
+			for (i = 1; i < (rows.length - 1); i++) {
+				shouldSwitch = false;
+				x = rows[i].getElementsByTagName("td")[n];
+				y = rows[i + 1].getElementsByTagName("td")[n];
+				if (dir == "asc") {
+					if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+					shouldSwitch = true;
+					break;
+		}
+				} else if (dir == "desc") {
+						if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+							shouldSwitch = true;
+							break;
+						}
+					}
+				}
+			if (shouldSwitch) {
+				rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+				switching = true;
+				switchcount ++;
+			} else {
+				if (switchcount == 0 && dir == "asc") {
+					dir = "desc";
+					switching = true;
+				}
+		} }
+	}
+	
+	function onClickHandler() {
+	  const n = document.getElementById('srt').value;
+	  sortTable(n-1);
+	}
+
+	function createСircles(){
+        var canvas = document.getElementById('graph');
+        var ctx = canvas.getContext('2d');
+	
+        $(сoordinates_).each(function(idx, p) {
+            ctx.beginPath();
+            ctx.arc(p[0], p[1], 2, 0, 2 * Math.PI);
+			ctx.fillStyle = "red";
+			ctx.fill();
+            ctx.stroke();
+        })
+    }
+
+	// function сlearCanvas(type){
+    //     if (type === 0){
+    //         ids = '#graph'
+    //         cnvs = ctx
+    //         coord = сoordinates_
+    //         $("#search_result").remove();
+
+	// 		cnvs.clearRect(0,0,$(ids)[0].width, $(ids)[0].height);
+
+	// 		cnvs.strokeRect(0, 0, 800, 500)
+    //         $(coord).each(function(idx, p) {
+    //             cnvs.font = "15px Verdana";
+    //             cnvs.fillStyle = "red";
+    //             cnvs.fillText(p[2], p[0], p[1]);
+    //             cnvs.beginPath();
+    //             cnvs.arc(p[0], p[1], 2, 0, 2 * Math.PI);
+    //             cnvs.stroke();
+
+    //     })}}
+
+
+</script>
