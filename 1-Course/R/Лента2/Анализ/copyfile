@@ -1,0 +1,22 @@
+#!/bin/bash
+
+cp Магазин1/in.txt Анализ/store1_in.txt
+cp Магазин1/out.txt Анализ/store1_out.txt
+cp Магазин2/in.txt Анализ/store2_in.txt
+cp Магазин2/out.txt Анализ/store2_out.txt
+cp Магазин3/in.txt Анализ/store3_in.txt
+cp Магазин3/out.txt Анализ/store3_out.txt
+cp Магазин4/in.txt Анализ/store4_in.txt
+cp Магазин4/out.txt Анализ/store4_out.txt
+cp Магазин5/in.txt Анализ/store5_in.txt
+cp Магазин5/out.txt Анализ/store5_out.txt
+cp Магазин6/in.txt Анализ/store6_in.txt
+cp Магазин6/out.txt Анализ/store6_out.txt
+cp Магазин7/in.txt Анализ/store7_in.txt
+cp Магазин7/out.txt Анализ/store7_out.txt
+cp Магазин8/in.txt Анализ/store8_in.txt
+cp Магазин8/out.txt Анализ/store8_out.txt
+cp Магазин9/in.txt Анализ/store9_in.txt
+cp Магазин9/out.txt Анализ/store9_out.txt
+cp Магазин10/in.txt Анализ/store10_in.txt
+cp Магазин10/out.txt Анализ/store10_out.txt
